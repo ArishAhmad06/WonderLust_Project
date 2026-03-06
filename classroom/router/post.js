@@ -1,5 +1,5 @@
 const express = require("express");
-const router = express.Router(); // create new router object from express router!
+const router = express.Router(); // create new router object from express router
 // Index-posts
 router.get("/", (req, res) => {
   res.send("Get for posts");

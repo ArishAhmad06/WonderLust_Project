@@ -4,7 +4,7 @@ const users = require("./router/user.js"); //export hone ke baad require users
 const posts = require("./router/post.js");
 // const cookieParser = require("cookie-parser");
 const session = require("express-session");
-const flash = require("connect-flash"); // require flash from package
+const flash = require("connect-flash"); // require flash from packages
 const path = require("path");
 
 const sessionOptions = {
