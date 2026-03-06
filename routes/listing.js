@@ -16,7 +16,7 @@ const validateListing = (req, res, next) => {
   }
 };
 
-//Index Route-router
+//Index Route
 router.get(
   "/",
   wrapAsync(async (req, res) => {
