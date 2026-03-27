@@ -311,7 +311,7 @@ const sampleListings = [
     location: "New Hampshire",
     country: "United States",
   },
-  {
+  { 
     title: "Luxury Villa in the Maldives",
     description:
       "Indulge in luxury in this overwater villa in the Maldives with stunning views of the Indian Ocean.",
