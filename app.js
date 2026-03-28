@@ -8,8 +8,8 @@ const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
 const { listingSchema, reviewSchema } = require("./schema.js");
 const session = require("express-session");
-const flash = require("connect-flash"); // flash require
-const passport = require("passport");
+const flash = require("connect-flash"); // flash require for success/error show
+const passport = require("passport"); //Authentication(login system)
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
@@ -39,13 +39,13 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "/public")));
 
 const sessionOptions = {
-  secret: "mysupersecretstring",
+  secret: "mysupersecretstring",  //session encrypt
   resave: false,
   saveUninitialized: true,
   cookie: {
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
     maxAge: 7 * 24 * 60 * 60 * 1000,
-    httpOnly: true,
+    httpOnly: true,  //no access from js
   },
 };
 app.use(session(sessionOptions));
@@ -64,11 +64,11 @@ app.get("/", (req, res) => {
   res.redirect("/listings");
 });
 
-// middleware for locals
+//  middleware for locals
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
-  res.locals.currUser = req.user;
+  res.locals.currUser = req.user;  //curr login user
   next();
 });
 
@@ -83,9 +83,9 @@ app.use((req, res, next) => {
 
 app.use("/listings", listingsRouter);
 app.use("/listings/:id/reviews", reviewsRouter);
-app.use("/", usersRouter);
+app.use("/", usersRouter);  // login & singup
 
-//Middleware
+//error Handling middleware
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Somthing went wrong!" } = err;
   res.render("error.ejs", { err });
