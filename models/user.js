@@ -1,8 +1,6 @@
-const mongoose = require("mongoose"); // Importing/Requiring mongoose from package.
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const passportLocalMongoose =
-  require("passport-local-mongoose").default ||
-  require("passport-local-mongoose");
+const passportLocalMongoose = require("passport-local-mongoose").default
 
 const userSchema = new Schema({
   email: {
@@ -11,5 +9,7 @@ const userSchema = new Schema({
   },
 });
 
-userSchema.plugin(passportLocalMongoose); //for usrname and salted password
+userSchema.plugin(passportLocalMongoose);
+
+
 module.exports = mongoose.model("User", userSchema);
