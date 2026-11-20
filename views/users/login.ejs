@@ -1,17 +1,37 @@
-<% layout("/layouts/boilerplate") %>
-    <div class="row mt-3">
-        <h2 class="col-6 offset-2">Login on WonderLust</h2>
-        <div class="col-6 offset-2">
-            <form action="/login" method="POST" class="needs-validation" novalidate>
-                <div class="mb-3">
-                    <label for="username" class="form-label">username</label>
-                    <input id="username" name="username" type="text" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input id="password" name="password" type="password" class="form-control" required>
-                </div>
-                <button class="btn btn-success">Login</button>
-            </form>
+<%- layout("/layouts/boilerplate") %>
+
+  <section>
+    <div>
+      <div class="auth-card auth-card--compact">
+        <div class="auth-header">
+          <p class="auth-kicker"> Welcome back </p>
+          <h1>Log in to StayLuxora</h1>
+          <p class="auth-subtitle">Access your trips, listings, and saved destinations.</p>
         </div>
-    </div>
+        <form action="/login" method="POST" class="needs-validation auth-form" novalidate>
+
+          <div class="mb-3">
+            <label for="username" class="form-label">username</label>
+            <input name="username" type="text" class="form-control" required />
+            <div class="invalid-feedback">Please enter your username.</div>
+
+          </div>
+
+          <div class="mb-4">
+            <label for="password" class="form-label">Password</label>
+            <input name="password" id="password" type="password" class="form-control" autocomplete="new-password"
+              required />
+            <div class="invalid-feedback">Please enter your password.</div>
+
+          </div>
+
+          <button type="submit" class="btn auth-btn">Login</button>
+        </form>
+        <p class="auth-switch mb-0">
+          New to ZyloStays?
+          <a href="/signup">Create account</a>
+        </p>
+      </div>
+
+
+  </section>
