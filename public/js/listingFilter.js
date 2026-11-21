@@ -50,8 +50,7 @@ if (
     if (selectedCategory !== "all") params.set("category", selectedCategory);
     else params.delete("category");
 
-    const nextUrl = `${window.location.pathname}${params.toString() ? `? ${params.toString()}` : ""}`;
-
+    const nextUrl = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ""}`;
     window.history.replaceState({}, "", nextUrl);
   };
 

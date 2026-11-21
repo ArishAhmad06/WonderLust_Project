@@ -30,10 +30,21 @@ module.exports.renderLoginForm = (req, res) => {
   res.render("users/login.ejs");
 };
 
-module.exports.login = async (req, res) => {
-  req.flash("success", `Welcome back , ${req.user.username.toUpperCase()} !`);
-  let redirectUrl = res.locals.redirectUrl || "/listings";
-  return res.redirect(redirectUrl);
+module.exports.login = (req, res, next) => {
+    req.flash(
+        "success",
+        `Welcome back, ${req.user.username.toUpperCase()}!`
+    );
+
+    const redirectUrl = res.locals.redirectUrl || "/listings";
+
+    req.session.save((err) => {
+        if (err) {
+            return next(err);
+        }
+
+        res.redirect(redirectUrl);
+    });
 };
 
 module.exports.logout = (req, res, next) => {

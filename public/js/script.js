@@ -46,29 +46,29 @@ if (toggle && menu) {
 
 // scrollFilters
 
+// scrollFilters
 const filterRow = document.getElementById("filters-wrap");
 const leftBtn = document.getElementById("scrollLeft");
 const rightBtn = document.getElementById("scrollRight");
-const scrollAmount = 250; //1 CLICK = 300PX SCROLL
+const scrollAmount = 250;
 
 if (filterRow && leftBtn && rightBtn) {
   leftBtn.addEventListener("click", () => {
-    filterRow.scrollBy({
-      left: -scrollAmount, //SCROLL LEFT
-      behavior: "smooth",
-    });
-    rightBtn.addEventListener("click", () => {
-      filterRow.scrollBy({ left: scrollAmount, behavior: "smooth" });
-    });
+    filterRow.scrollBy({ left: -scrollAmount, behavior: "smooth" });
   });
+  rightBtn.addEventListener("click", () => {
+    filterRow.scrollBy({ left: scrollAmount, behavior: "smooth" });
+  });
+
   const updateButtons = () => {
     leftBtn.style.display = filterRow.scrollLeft > 0 ? "block" : "none";
-
     rightBtn.style.display =
-      filterRow.scrollLeft + filterRow.clientWidth < filterRow.scrollWidth
+      filterRow.scrollLeft + filterRow.clientWidth < filterRow.scrollWidth - 1
         ? "block"
         : "none";
   };
   filterRow.addEventListener("scroll", updateButtons);
   window.addEventListener("load", updateButtons);
+  window.addEventListener("resize", updateButtons);
+  updateButtons();
 }

@@ -1,102 +1,82 @@
+const mapEl = document.getElementById("map");
 
-if (
-  typeof mapboxgl !== "undefined" &&
-  mapToken &&
-  listing &&
-  listing.geometry &&
-  listing.geometry.coordinates &&
-  listing.geometry.coordinates.length === 2
-) {
-  mapboxgl.accessToken = mapToken;
+if (mapEl && typeof mapboxgl !== "undefined") {
+  const token = mapEl.dataset.token;
+  const lng = parseFloat(mapEl.dataset.lng);
+  const lat = parseFloat(mapEl.dataset.lat);
+  const locationName = mapEl.dataset.location;
 
-  const coordinates = listing.geometry.coordinates;
+  if (token && !Number.isNaN(lng) && !Number.isNaN(lat)) {
+    mapboxgl.accessToken = token;
+    const coordinates = [lng, lat];
 
-  // Create Map
-  const map = new mapboxgl.Map({
-    container: "map",
-    style: "mapbox://styles/mapbox/streets-v12",
-    center: coordinates,
-    zoom: 13,
-  });
+    // Create Map
+    const map = new mapboxgl.Map({
+      container: "map",
+      style: "mapbox://styles/mapbox/streets-v12",
+      center: coordinates,
+      zoom: 13,
+    });
 
-  // Zoom Buttons (+ -)
-  map.addControl(new mapboxgl.NavigationControl());
+    // Controls: zoom, fullscreen, scale, current location
+    map.addControl(new mapboxgl.NavigationControl());
+    map.addControl(new mapboxgl.FullscreenControl());
+    map.addControl(new mapboxgl.ScaleControl());
+    map.addControl(
+      new mapboxgl.GeolocateControl({
+        positionOptions: { enableHighAccuracy: true },
+        trackUserLocation: true,
+        showUserHeading: true,
+      }),
+    );
 
-  // Full Screen Button
-  map.addControl(new mapboxgl.FullscreenControl());
+    // Popup (built with textContent, so listing text can't inject HTML)
+    const popupContent = document.createElement("div");
+    const popupTitle = document.createElement("h5");
+    popupTitle.textContent = locationName;
+    const popupText = document.createElement("p");
+    popupText.textContent = "Exact location provided after booking.";
+    popupContent.append(popupTitle, popupText);
 
-  // Scale
-  map.addControl(new mapboxgl.ScaleControl());
+    const popup = new mapboxgl.Popup({ offset: 25 }).setDOMContent(popupContent);
 
-  // Current Location Button
-  map.addControl(
-    new mapboxgl.GeolocateControl({
-      positionOptions: {
-        enableHighAccuracy: true,
-      },
-      trackUserLocation: true,
-      showUserHeading: true,
-    })
-  );
+    // Marker
+    new mapboxgl.Marker({ color: "red" })
+      .setLngLat(coordinates)
+      .setPopup(popup)
+      .addTo(map);
 
-  // Marker
-  const popup = new mapboxgl.Popup({
-    offset: 25,
-  }).setHTML(`
-      <h5>${listing.location}</h5>
-      <p>Exact location provided after booking.</p>
-  `);
-
-  new mapboxgl.Marker({
-    color: "red",
-  })
-    .setLngLat(coordinates)
-    .setPopup(popup)
-    .addTo(map);
-
-  // Fly Animation
-  map.flyTo({
-    center: coordinates,
-    zoom: 13,
-    speed: 1.2,
-  });
-
-  // Circle after map load
-  map.on("load", () => {
-    map.addSource("location-circle", {
-      type: "geojson",
-      data: {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: coordinates,
+    // Approximate-area circle after map load
+    map.on("load", () => {
+      map.addSource("location-circle", {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          geometry: { type: "Point", coordinates },
         },
-      },
-    });
+      });
 
-    map.addLayer({
-      id: "circle-layer",
-      type: "circle",
-      source: "location-circle",
-      paint: {
-        // approx 150m radius visual
-        "circle-radius": [
-          "interpolate",
-          ["linear"],
-          ["zoom"],
-          5, 5,
-          10, 20,
-          13, 60,
-          15, 120,
-          18, 250
-        ],
-
-        "circle-color": "#ff0000",
-        "circle-opacity": 0.4,
-        "circle-stroke-color": "#ff0000",
-        // "circle-stroke-width": 2,
-        "circle-stroke-opacity": 0.8,
-      },
+      map.addLayer({
+        id: "circle-layer",
+        type: "circle",
+        source: "location-circle",
+        paint: {
+          "circle-radius": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            5, 5,
+            10, 20,
+            13, 60,
+            15, 120,
+            18, 250,
+          ],
+          "circle-color": "#ff0000",
+          "circle-opacity": 0.4,
+          "circle-stroke-color": "#ff0000",
+          "circle-stroke-opacity": 0.8,
+        },
+      });
     });
-  });
+  }
 }

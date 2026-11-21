@@ -2,7 +2,7 @@
 
   <!-- LEFT -->
   <div class="nav-left">
-    <a href="/listings" class="logo" aria-label="StayLoom home">
+    <a href="/listings" class="logo" aria-label="ZyloStays">
       <i class="fa-regular fa-compass"></i>
     </a>
     <a href="/listings" class="explore">ZyloStays</a>
@@ -10,14 +10,8 @@
 
   <!-- CENTER SEARCH -->
   <form class="nav-search" id="listingSearchForm" action="/listings" method="GET">
-    <input
-     type="text"
-     placeholder="Search Destination" 
-     id="listingSearchInput"
-     name="q"
-     value="<%= typeof searchQuery !== 'undefined' ? searchQuery: '' %>"
-     aria-label="Search destination"
-     >
+    <input type="text" placeholder="Search Destination" id="listingSearchInput" name="q"
+      value="<%= typeof searchQuery !== 'undefined' ? searchQuery: '' %>" aria-label="Search destination">
     <button class="search-btn" type="submit ">
       <i class="fa-solid fa-magnifying-glass"></i>
       <span>Search</span>
@@ -36,7 +30,7 @@
       </div>
     </div>
 
-    <% if(!currUser){ %>
+    <% if(!locals.currUser){ %>
       <a href="/signup"><b>Sign Up</b></a>
       <a href="/login"><b>Log In</b></a>
       <% } else { %>
@@ -45,6 +39,6 @@
   </div>
 
   <!-- MOBILE TOGGLE -->
-   <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">☰</button>
+  <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">☰</button>
 
 </nav>

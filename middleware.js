@@ -58,7 +58,7 @@ module.exports.isReviewAuthor = async (req, res, next) => {
   let { id, reviewId } = req.params;
   let review = await Review.findById(reviewId);
   if (!review.author.equals(res.locals.currUser._id)) {
-    req.flash("error", "You are not the owner of this Review");
+        req.flash("error", "You must be logged in to ZyloStays!");
     return res.redirect(`/listings/${id}`);
   }
   next();
